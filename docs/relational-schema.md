@@ -1,6 +1,6 @@
 # Smart Money Tracker — Relational Schema (Target)
 
-Notation: `PK` primary key, `FK` foreign key, `UK` unique, `NN` not null, `CK` check constraint, `GEN` generated stored.
+Notation: PK = primary key, FK = foreign key, UK = unique, NN = not null, CK = check, GEN = generated stored.
 
 1. **USERS**(`user_id` PK, `username` UK NN, `email` UK NN, `password_hash` NN, `is_active` NN DEFAULT TRUE, `created_at` NN DEFAULT CURRENT_TIMESTAMP)
 2. **ROLES**(`role_id` PK, `role_name` UK NN, `description`)
@@ -25,4 +25,4 @@ Notation: `PK` primary key, `FK` foreign key, `UK` unique, `NN` not null, `CK` c
 - Reject if transaction_date is before start_date or after non-null end_date.
 - Raise clear exceptions for missing referenced rows.
 
-See `schema-review.md` for the design decisions to agree before implementation.
+Review `schema-review.md` and agree outstanding design decisions before implementing DDL.
