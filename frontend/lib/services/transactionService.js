@@ -24,3 +24,13 @@ export async function getInsiderTransactions() {
   );
   return rows;
 }
+
+// Update transaction shares (fires AFTER UPDATE audit trigger).
+export async function updateTransactionShares(transactionId, sharesTraded) {
+  const [res] = await pool.query(
+    "UPDATE insider_transactions SET shares_traded = ? WHERE transaction_id = ?",
+    [sharesTraded, transactionId]
+  );
+  return res.affectedRows;
+}
+
