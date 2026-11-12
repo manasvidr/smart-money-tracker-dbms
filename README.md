@@ -92,3 +92,89 @@ Execution testing, validation of all database constraints, and integration with 
 
 Responsible for relational database design, schema creation, constraints, SQL queries, stored procedures, stored functions, triggers, and database testing.
 
+**Member 2 – NoSQL, Backend, Frontend and Authentication**
+
+Responsible for:
+- **NoSQL / MongoDB Layer**: Implemented Python automation (`mongodb/`) for collection initialization with JSON Schema validation and compound indexes. Ingested raw SEC Form 4 XML/JSON filings linked to MySQL via unique `accession_number`. Built and tested CRUD operations script.
+- **Backend Architecture**: Built layered Next.js 16 API routes (`routes -> controllers -> services -> config`) with parameterized SQL queries (`mysql2/promise`) and connection pooling.
+- **Authentication & Roles**: Implemented secure registration and login using `bcryptjs` password hashing and stateless HMAC-SHA256 JWT tokens stored in `httpOnly` cookies. Enforced Role-Based Access Control (RBAC) with `ADMIN` and `ANALYST` roles.
+- **DML Operations**: Built user Watchlist feature demonstrating all 3 core DML operations: `INSERT` (add company), `UPDATE` (modify thesis note), and `DELETE` (remove company).
+- **Trigger Integration**: Connected and demonstrated the `AFTER UPDATE` audit trigger on `insider_transactions`, populating before-and-after JSON snapshots into `audit_logs` viewable on an Admin-only audit page.
+- **Stored Function Integration**: Integrated MySQL stored function `fn_calculate_return` to compute and display a 30-day percentage return market signal on company profiles.
+- **Frontend User Interface**: Built clean, plain CSS client components for Dashboard, Companies Directory, Company Details, Insider Trades Ledger, Institutional Holdings (13F), Watchlist, and Cross-Database SEC Filing Inspector.
+
+---
+
+## Setup & Running Instructions
+
+### 1. Prerequisites
+- **Node.js**: v18+ (tested on Node v26)
+- **Python**: v3.9+ (tested on Python 3.15)
+- **MySQL**: 8.0+
+- **MongoDB**: 6.0+
+
+### 2. MySQL Database Setup
+Start the MySQL service and load the relational database schema and seed files:
+
+```bash
+# Create database and tables
+mysql -u root -p -e "CREATE DATABASE IF NOT EXISTS smart_money_tracker;"
+mysql -u root -p smart_money_tracker < database/schema.sql
+mysql -u root -p smart_money_tracker < database/sample_data.sql
+
+# Load auxiliary data, stored functions and triggers
+mysql -u root -p smart_money_tracker < database/daily_prices.sql
+mysql -u root -p smart_money_tracker < database/insider_transactions.sql
+mysql -u root -p smart_money_tracker < database/institutional_holdings.sql
+mysql -u root -p smart_money_tracker < database/transaction_owners.sql
+mysql -u root -p smart_money_tracker < database/stored_functions.sql
+mysql -u root -p smart_money_tracker < database/audit_trigger.sql
+mysql -u root -p smart_money_tracker < database/audit_update_delete_triggers.sql
+mysql -u root -p smart_money_tracker < database/transaction_validation_trigger.sql
+```
+
+### 3. MongoDB Setup & Ingestion
+Start the MongoDB daemon, set up the Python virtual environment, create the collection with schema validator, and ingest filings:
+
+```bash
+cd mongodb
+python3 -m venv venv
+source venv/bin/activate    # On Windows: venv\Scripts\activate
+pip install -r requirements.txt
+
+# Configure environment credentials (copy and edit if password needed)
+cp .env.example .env
+
+# Create collection with JSON schema validator & indexes
+python create_collection.py
+
+# Ingest SEC filings matched to MySQL accession numbers
+python insert_filings.py
+
+# (Optional) Verify CRUD operations
+python crud_operations.py
+```
+
+### 4. Frontend & Backend Application
+From the repository root:
+
+```bash
+cd frontend
+npm install
+
+# Configure environment variables
+cp .env.example .env.local
+
+# Provision an administrator account (arg: password)
+node scripts/create_admin.js admin123
+
+# Start development server
+npm run dev
+```
+
+Visit **`http://localhost:3000`** in your browser.
+
+- **Admin Account**: Username `admin`, Password `admin123`
+- **Analyst Registration**: Navigate to `/register` to create a new analyst account.
+
+
