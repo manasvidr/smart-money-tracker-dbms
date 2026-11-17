@@ -76,9 +76,9 @@ The `database/` directory contains the SQL implementation:
 
 ## Project Documentation
 
-- `docs/relational-schema-final.md` — Relational schema documentation.
+- `docs/Smart_Money_Tracker_Relational_Schema.docx` — Relational schema documentation.
 - `docs/schema-review-final.md` — Database design decisions and integrity rules.
-- `docs/chen-er-diagram-final.dot` — Chen ER diagram source.
+- `docs/chen_er_diagram.svg` — Chen ER diagram.
 
 ## Implementation Status
 
