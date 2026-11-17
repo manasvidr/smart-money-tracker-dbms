@@ -1,11 +1,11 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, Suspense } from "react";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 
-// Companies directory with search filter.
-export default function CompaniesPage() {
+// Companies directory internal component using search params.
+function CompaniesContent() {
   const searchParams = useSearchParams();
   const initialSearch = searchParams.get("search") || "";
   const [search, setSearch] = useState(initialSearch);
@@ -100,5 +100,14 @@ export default function CompaniesPage() {
         </div>
       )}
     </div>
+  );
+}
+
+// Companies directory with search filter wrapped in Suspense.
+export default function CompaniesPage() {
+  return (
+    <Suspense fallback={<p>Loading companies...</p>}>
+      <CompaniesContent />
+    </Suspense>
   );
 }
