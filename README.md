@@ -60,7 +60,7 @@ The `database/` directory contains the SQL implementation:
 | stored_functions.sql | Stored function implementation |
 | audit_trigger.sql | INSERT audit trigger |
 | audit_update_delete_triggers.sql | UPDATE and DELETE audit triggers |
-| transaction_validation_trigger.sql | Transaction validation trigger |
+| owner_tenure_trigger.sql | Owner tenure validation trigger |
 
 ## Key Database Features
 
@@ -130,7 +130,7 @@ mysql -u root -p smart_money_tracker < database/transaction_owners.sql
 mysql -u root -p smart_money_tracker < database/stored_functions.sql
 mysql -u root -p smart_money_tracker < database/audit_trigger.sql
 mysql -u root -p smart_money_tracker < database/audit_update_delete_triggers.sql
-mysql -u root -p smart_money_tracker < database/transaction_validation_trigger.sql
+mysql -u root -p smart_money_tracker < database/owner_tenure_trigger.sql
 ```
 
 ### 3. MongoDB Setup & Ingestion
