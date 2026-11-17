@@ -1,0 +1,4 @@
+dnspython==2.9.2
+pymongo==4.20.0
+PyMySQL==1.2.4
+python-dotenv==1.2.4
